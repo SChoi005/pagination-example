@@ -1,0 +1,1 @@
+INSERT INTO bulletin_board (id, content, created_at, created_by) VALUES (1, 'data1', '2022-04-17 06:45:59','choi');
