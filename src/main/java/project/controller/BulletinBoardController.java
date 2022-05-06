@@ -17,7 +17,7 @@ public class BulletinBoardController{
     private BulletinBoardService bulletinBoardService;
     
     @GetMapping("/bulletin-board/pages")
-    public ResponseEntity<?> getBulletinBoardPage(@RequestParam("nowPage") int nowPage, @RequestParam("countPerPage") int countPerPage){
+    public ResponseEntity<?> getBulletinBoardPage(@RequestParam("nowPage") int nowPage, @RequestParam("countPerPage") int countPerPage) throws Exception{
         return ResponseEntity.ok().body(bulletinBoardService.getBulletinBoardPage(nowPage, countPerPage));
     }
 }

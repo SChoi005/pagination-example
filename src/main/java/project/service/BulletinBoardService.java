@@ -16,23 +16,22 @@ public class BulletinBoardService{
     @Autowired
     private BulletinBoardRepository bulletinBoardRepository;
     
-    public Page getBulletinBoardPage(int nowPage, int countPerPage){
+    public Page getBulletinBoardPage(int nowPage, int countPerPage) throws Exception{
         
         long totalBulletinBoards = bulletinBoardRepository.count();
         
         if(totalBulletinBoards !=0){
             return makePage(nowPage, countPerPage, totalBulletinBoards);
         }else
-            return null;
+            throw new Exception("Nothing in bulletin board");
     }
     
-    Page makePage(int nowPage, int countPerPage, long totalBulletinBoards){
-        
+    Page makePage(int nowPage, int countPerPage, long totalBulletinBoards) throws Exception{
         Page page = new Page();
         int totalPages = getTotalPages(countPerPage, totalBulletinBoards);
         
         if(totalPages < nowPage)
-            return null;
+            throw new Exception("There is no that page");
         else{
             page.setStartPage(1);
             page.setEndPage(totalPages);
@@ -50,13 +49,10 @@ public class BulletinBoardService{
     
     List<BulletinBoard> getBulletinBoardsOfPage(int nowPage, int countPerPage, long totalBulletinBoards){
         
-        List<BulletinBoard> bulletinBoards = bulletinBoardRepository.findAll();
-        
         long endIndex = (long)nowPage*countPerPage;
         if(endIndex > totalBulletinBoards)
-            return bulletinBoards.subList(nowPage*countPerPage-countPerPage, (int)totalBulletinBoards);
+            return bulletinBoardRepository.findByIdBetween(endIndex-countPerPage+1, totalBulletinBoards);
         else
-            return bulletinBoards.subList(nowPage*countPerPage-countPerPage, (int)endIndex);
+            return bulletinBoardRepository.findByIdBetween(endIndex-countPerPage+1, endIndex);
     }
-    
 }
